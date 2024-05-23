@@ -2,6 +2,8 @@
 
 Boxboxd é uma aplicação web em desenvolvimento focada em interações entre usuários sobre Formula 1, incluindo times, pilotos e pistas.
 
+Projeto no [Figma](https://www.figma.com/design/9cK2twoVWaie6TXbJcjry2/BoxBoxd-Pages?node-id=0%3A1&t=XgsCDhh3h49G1Ucx-1)
+
 ## Funcionalidades Previstas
 
 - **Likes:** Usuários podem dar likes em pilotos, times e pistas favoritos.
