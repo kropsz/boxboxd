@@ -1,0 +1,2 @@
+INSERT INTO tb_user (first_name, last_name, username, photo, email, password)
+VALUES ('John', 'Doe', 'johndoe', 0, 'johndoe@example.com', '$2a$12$dI.KNIYjvClmqdIwVl0WWO/6sv3/B0hOhRdc9/SdCVcuCu8JJx6Ia');
