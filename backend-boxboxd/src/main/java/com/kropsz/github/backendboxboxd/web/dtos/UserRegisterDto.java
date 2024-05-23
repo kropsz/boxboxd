@@ -17,7 +17,7 @@ public class UserRegisterDto{
     @NotEmpty
     String username;
     byte photo;
-    @Email
+    @Email(message = "formato do e-mail está invalido", regexp = "^[a-z0-9.+-]+@[a-z0-9.-]+\\.[a-z]{2,}$")
     @NotEmpty
     String email;
     @Size(min = 5)

@@ -27,7 +27,7 @@ public class AdminUserConfig implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
 
-        var roleAdmin = roleRepository.findByName(Role.Values.ADMIN.name());
+        var roleAdminOptional = roleRepository.findByName(Role.Values.ADMIN.name());
 
         var userAdmin = userRepository.findByUsername("admin");
 
@@ -36,11 +36,13 @@ public class AdminUserConfig implements CommandLineRunner {
                     log.info("Admin user already exists");
                 },
                 () -> {
-                    var user = new User();
-                    user.setUsername("admin");
-                    user.setPassword(passwordEncoder.encode("123"));
-                    user.setRoles(Set.of(roleAdmin));
-                    userRepository.save(user);
+                    roleAdminOptional.ifPresent(roleAdmin -> {
+                        var user = new User();
+                        user.setUsername("admin");
+                        user.setPassword(passwordEncoder.encode("123"));
+                        user.setRoles(Set.of(roleAdmin));
+                        userRepository.save(user);
+                    });
                 }
         );
     }

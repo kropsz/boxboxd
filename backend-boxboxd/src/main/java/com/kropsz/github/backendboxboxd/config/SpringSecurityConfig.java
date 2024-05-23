@@ -39,7 +39,7 @@ public class SpringSecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/api/boxboxd/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/boxboxd/register").permitAll()
                         .requestMatchers( HttpMethod.POST, "api/boxboxd/login").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
