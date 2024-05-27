@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.kropsz.github.backendboxboxd.entities.Team;
 
-public interface TeamRepository extends JpaRepository<Team, Long>{
+public interface TeamRepository extends JpaRepository<Team, String>{
     
 }

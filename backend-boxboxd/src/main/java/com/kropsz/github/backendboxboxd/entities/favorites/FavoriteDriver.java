@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "favorite_driver")
+@Table(name = "tb_favorite_driver")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor

@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "favorite_team")
+@Table(name = "tb_favorite_team")
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class FavoriteTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
-    private Long teamId;    
+    private String teamName;    
 }
