@@ -1,9 +1,5 @@
 package com.kropsz.github.backendboxboxd.web.exceptions;
 
-import com.kropsz.github.backendboxboxd.exception.BusinessViolationException;
-import com.kropsz.github.backendboxboxd.exception.UserNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -15,6 +11,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.kropsz.github.backendboxboxd.exception.BusinessViolationException;
+import com.kropsz.github.backendboxboxd.exception.ConflictException;
+import com.kropsz.github.backendboxboxd.exception.NotFoundException;
+import com.kropsz.github.backendboxboxd.exception.UserNotFoundException;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
@@ -32,7 +36,7 @@ public class ApiExceptionHandler {
                 .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "Campos Inválidos: ", result));
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler({UserNotFoundException.class,NotFoundException.class })
     public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException ex, HttpServletRequest request) {
         log.error("Api Error - ", ex);
         return ResponseEntity
@@ -41,7 +45,7 @@ public class ApiExceptionHandler {
                 .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
-    @ExceptionHandler(BusinessViolationException.class)
+    @ExceptionHandler({BusinessViolationException.class, ConflictException.class})
     public ResponseEntity<ErrorMessage> businessViolationException(RuntimeException ex,
                                                                    HttpServletRequest request) {
         log.error("Api Error - ", ex);
