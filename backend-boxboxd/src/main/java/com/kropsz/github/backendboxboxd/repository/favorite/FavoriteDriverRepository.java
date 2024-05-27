@@ -9,5 +9,7 @@ import com.kropsz.github.backendboxboxd.entities.favorites.FavoriteDriver;
 public interface FavoriteDriverRepository extends JpaRepository<FavoriteDriver, Long>{
 
     Optional<FavoriteDriver> findByDriverCodeAndUserId(String code, Long userId);
+
+    void deleteByDriverCodeAndUserId(String driverCode, Long userId);
     
 }

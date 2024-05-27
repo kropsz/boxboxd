@@ -13,15 +13,23 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class FavoriteDriverStrategy implements FavoriteStrategy {
-    
+
     private final FavoriteDriverRepository favoriteDriverRepository;
 
-        @Override
+    @Override
     public boolean execute(String code, Long userId) {
-        Optional<FavoriteDriver> existingFavoriteDriver = favoriteDriverRepository.findByDriverCodeAndUserId(code, userId);
-        return !existingFavoriteDriver.isPresent();        
+        Optional<FavoriteDriver> existingFavoriteDriver = favoriteDriverRepository.findByDriverCodeAndUserId(code,
+                userId);
+        return !existingFavoriteDriver.isPresent();
     }
-    
+
+    @Override
+    public boolean exists(String code, Long userId) {
+        Optional<FavoriteDriver> existingFavoriteDriver = favoriteDriverRepository.findByDriverCodeAndUserId(code,
+                userId);
+        return existingFavoriteDriver.isPresent();
+    }
+
     @Override
     public boolean supports(String type) {
         return type.equals("driver");
