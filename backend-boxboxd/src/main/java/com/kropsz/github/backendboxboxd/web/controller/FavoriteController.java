@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kropsz.github.backendboxboxd.service.FavoriteDriverService;
+import com.kropsz.github.backendboxboxd.service.FavoriteTeamSerivce;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,19 +18,36 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/boxboxd")
 public class FavoriteController {
     
-    private final FavoriteDriverService favoriteService;
+    private final FavoriteDriverService favoriteDriverService;
+    private final FavoriteTeamSerivce  favoriteTeamSerivce;
+
 
     @PostMapping("/favorite/driver/{driverCode}")
     public ResponseEntity<Void> addFavoriteDriver(@PathVariable String driverCode, JwtAuthenticationToken token) {
         var userId = Long.parseLong(token.getName());
-        favoriteService.addFavoriteDriver(driverCode, userId);
+        favoriteDriverService.addFavoriteDriver(driverCode, userId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/favorite/driver/{driverCode}")
     public ResponseEntity<Void> removeFavoriteDriver(@PathVariable String driverCode, JwtAuthenticationToken token) {
         var userId = Long.parseLong(token.getName());
-        favoriteService.removeFavoriteDriver(driverCode, userId);
+        favoriteDriverService.removeFavoriteDriver(driverCode, userId);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/favorite/team/{teamName}")
+    public ResponseEntity<Void> addFavoriteTeam(@PathVariable String teamName, JwtAuthenticationToken token) {
+        var userId = Long.parseLong(token.getName());
+        favoriteTeamSerivce.addFavoriteTeam(teamName, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/favorite/team/{teamName}")
+    public ResponseEntity<Void> removeFavoriteTeam(@PathVariable String teamName, JwtAuthenticationToken token) {
+        var userId = Long.parseLong(token.getName());
+        favoriteTeamSerivce.removeFavoriteTeam(teamName, userId);
+        return ResponseEntity.ok().build();
+    }
+
 }
