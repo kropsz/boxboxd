@@ -9,7 +9,7 @@ import com.kropsz.github.backendboxboxd.util.factory.ObjectFactory;
 public class FavoriteTeamFactory implements ObjectFactory{
 
     @Override
-    public Object create(String id, Long userId) {
+    public FavoriteTeam create(String id, Long userId) {
         FavoriteTeam favoriteTeam = new FavoriteTeam();
         favoriteTeam.setTeamName(id);
         favoriteTeam.setUserId(userId);

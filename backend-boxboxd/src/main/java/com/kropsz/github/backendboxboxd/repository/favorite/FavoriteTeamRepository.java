@@ -9,5 +9,7 @@ import com.kropsz.github.backendboxboxd.entities.favorites.FavoriteTeam;
 public interface FavoriteTeamRepository extends JpaRepository<FavoriteTeam, Long>{
 
     Optional<FavoriteTeam> findByTeamNameAndUserId(String name, Long userId);
+
+    void deleteByTeamNameAndUserId(String teamName, Long userId);
     
 }

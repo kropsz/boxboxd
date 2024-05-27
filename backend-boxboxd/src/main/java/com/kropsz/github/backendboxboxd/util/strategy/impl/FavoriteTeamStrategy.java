@@ -21,6 +21,12 @@ public class FavoriteTeamStrategy implements FavoriteStrategy{
         Optional<FavoriteTeam> existingFavoriteTeam = favoriteTeamRepository.findByTeamNameAndUserId(name, userId);
         return !existingFavoriteTeam.isPresent();    
     }
+
+    @Override
+    public boolean exists(String name, Long userId) {
+        Optional<FavoriteTeam> existingFavoriteTeam = favoriteTeamRepository.findByTeamNameAndUserId(name, userId);
+        return existingFavoriteTeam.isPresent();    
+    }
     
     @Override
     public boolean supports(String type) {
