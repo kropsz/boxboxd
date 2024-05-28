@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.kropsz.github.backendboxboxd.exception.ConflictException;
 import com.kropsz.github.backendboxboxd.exception.NotFoundException;
+import com.kropsz.github.backendboxboxd.repository.TeamRepository;
 import com.kropsz.github.backendboxboxd.repository.favorite.FavoriteTeamRepository;
 import com.kropsz.github.backendboxboxd.util.factory.impl.FavoriteTeamFactory;
 import com.kropsz.github.backendboxboxd.util.strategy.FavoriteStrategy;
@@ -19,8 +20,13 @@ public class FavoriteTeamSerivce {
     private final FavoriteTeamRepository favoriteTeamRepository;
     private final List<FavoriteStrategy> favoriteStrategies;
     private final FavoriteTeamFactory favoriteTeamFactory;
+    private final TeamRepository teamRepository;
 
     public void addFavoriteTeam(String teamName, Long userId) {
+
+        if (!teamRepository.existsById(teamName))
+            throw new NotFoundException("Time não encontrado para o teamName: " + teamName);
+
         FavoriteStrategy strategy = favoriteStrategies.stream()
                 .filter(s -> s.supports("team"))
                 .findFirst()
@@ -36,6 +42,10 @@ public class FavoriteTeamSerivce {
 
     @Transactional
     public void removeFavoriteTeam(String teamName, Long userId) {
+
+        if (!teamRepository.existsById(teamName))
+            throw new NotFoundException("Time não encontrado para o teamName: " + teamName);
+
         FavoriteStrategy strategy = favoriteStrategies.stream()
                 .filter(s -> s.supports("team"))
                 .findFirst()

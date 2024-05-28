@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kropsz.github.backendboxboxd.exception.ConflictException;
 import com.kropsz.github.backendboxboxd.exception.NotFoundException;
+import com.kropsz.github.backendboxboxd.repository.DriverRepository;
 import com.kropsz.github.backendboxboxd.repository.favorite.FavoriteDriverRepository;
 import com.kropsz.github.backendboxboxd.util.factory.impl.FavoriteDriverFactory;
 import com.kropsz.github.backendboxboxd.util.strategy.FavoriteStrategy;
@@ -20,8 +21,13 @@ public class FavoriteDriverService {
     private final FavoriteDriverRepository favoriteDriverRepository;
     private final List<FavoriteStrategy> favoriteStrategies;
     private final FavoriteDriverFactory favoriteDriverFactory;
+    private final DriverRepository driverRepository;
 
     public void addFavoriteDriver(String driverId, Long userId) {
+
+        if (!driverRepository.existsById(driverId)) 
+            throw new NotFoundException("Piloto não encontrado para o driverId: " + driverId);
+
         FavoriteStrategy strategy = favoriteStrategies.stream()
                 .filter(s -> s.supports("driver"))
                 .findFirst()
@@ -37,6 +43,10 @@ public class FavoriteDriverService {
 
     @Transactional
     public void removeFavoriteDriver(String driverCode, Long userId) {
+        
+        if (!driverRepository.existsById(driverCode)) 
+            throw new NotFoundException("Piloto não encontrado para o driverCode: " + driverCode);
+
         FavoriteStrategy strategy = favoriteStrategies.stream()
                 .filter(s -> s.supports("driver"))
                 .findFirst()

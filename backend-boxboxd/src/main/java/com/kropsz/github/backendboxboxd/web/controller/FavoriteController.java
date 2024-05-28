@@ -33,7 +33,7 @@ public class FavoriteController {
     public ResponseEntity<Void> removeFavoriteDriver(@PathVariable String driverCode, JwtAuthenticationToken token) {
         var userId = Long.parseLong(token.getName());
         favoriteDriverService.removeFavoriteDriver(driverCode, userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/favorite/team/{teamName}")
@@ -47,7 +47,7 @@ public class FavoriteController {
     public ResponseEntity<Void> removeFavoriteTeam(@PathVariable String teamName, JwtAuthenticationToken token) {
         var userId = Long.parseLong(token.getName());
         favoriteTeamSerivce.removeFavoriteTeam(teamName, userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }
