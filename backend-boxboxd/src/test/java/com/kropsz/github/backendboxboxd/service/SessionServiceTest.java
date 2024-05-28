@@ -67,6 +67,7 @@ import com.kropsz.github.backendboxboxd.web.dtos.UserLoginDto;
         assertThatThrownBy(() -> sessionService.registerUser(VALID_USER)).isInstanceOf(BusinessViolationException.class);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @DisplayName("Login sucessfull")
     void testMakeLogin_Success() {
@@ -89,6 +90,7 @@ import com.kropsz.github.backendboxboxd.web.dtos.UserLoginDto;
         when(userRepository.findByUsername(VALID_LOGIN.username())).thenReturn(Optional.empty());
         doThrow(new BadCredentialsException("Usuário não existe ou senha errada"))
                 .when(sessionVerification).verfiyLogin(Optional.empty(), VALID_LOGIN);
+        assertThatThrownBy(() -> sessionService.makeLogin(VALID_LOGIN)).isInstanceOf(BadCredentialsException.class);
     }
 }
 
