@@ -30,6 +30,9 @@ public ResponseEntity<Page<Driver>> getDriversByProperty(
         @RequestParam(defaultValue = "DESC") Sort.Direction direction,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
+            if (orderBy == null || orderBy.isEmpty()) {
+                orderBy = "name";
+            }
     Pageable pageable = PageRequest.of(page, size, direction, orderBy);
     return ResponseEntity.ok().body(driverService.getDriversByProperty(property, value, pageable));
 }
