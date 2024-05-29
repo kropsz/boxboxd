@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,6 +45,7 @@ class DriverServiceTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    @DisplayName("Get drivers by property successfully")
     void testGetDriversByProperty() {
         var driver = VALID_DRIVER;
         Page<Driver> page = new PageImpl<>(Collections.singletonList(driver));
@@ -59,6 +61,7 @@ class DriverServiceTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    @DisplayName("test has property driver successfully")
     void testHasProperty() {
         
         Specification<Driver> spec = DriverService.hasProperty("code", "HAM");
@@ -80,12 +83,14 @@ class DriverServiceTest {
     }
 
     @Test
+    @DisplayName("test order by property successfully")
     void testOrderByProperty() {
         var sort = DriverService.orderByProperty("code", null);
         assertEquals("code: ASC", sort.toString());
     }
 
     @Test
+    @DisplayName("test order by property IllegalArgumentException")
     void testOrderByPropertyIllegalArgumentException() {
         try {
             DriverService.orderByProperty("", null);
@@ -95,6 +100,7 @@ class DriverServiceTest {
     }
 
     @Test
+    @DisplayName("test get drivers by property with null property and value")
     void testGetDriversByPropertyWithNullPropertyAndValue() {
         var driver = VALID_DRIVER;
         Page<Driver> page = new PageImpl<>(Collections.singletonList(driver));
@@ -108,6 +114,7 @@ class DriverServiceTest {
     }
 
     @Test
+    @DisplayName("test order by property with null property")
     void testOrderByPropertyWithNullProperty() {
         assertThrows(IllegalArgumentException.class, () -> {
             DriverService.orderByProperty(null, Sort.Direction.ASC);
@@ -115,6 +122,7 @@ class DriverServiceTest {
     }
 
     @Test
+    @DisplayName("test order by property with empty property")
     void testOrderByPropertyWithEmptyProperty() {
         assertThrows(IllegalArgumentException.class, () -> {
             DriverService.orderByProperty("", Sort.Direction.ASC);

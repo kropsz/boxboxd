@@ -20,10 +20,10 @@ import com.kropsz.github.backendboxboxd.security.TestConfig;
 import com.kropsz.github.backendboxboxd.web.exceptions.ErrorMessage;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "/database/drivers/drivers.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(scripts = "/database/drivers/delete-drivers.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = "/database/teams/teams.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "/database/teams/delete-teams.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Import(TestConfig.class)
-class DriverControllerTest {
+class TeamControllerTest {
 
     @Autowired
     WebTestClient testClient;
@@ -32,12 +32,12 @@ class DriverControllerTest {
     JwtTokenMock jwtTokenMock;
 
     @Test
-    @DisplayName("Get drivers by propertys")
-    void testGetDriversByProperty() throws JsonProcessingException {
+    @DisplayName("Get teams by propertys")
+    void testGetTeamsByProperty() throws JsonProcessingException {
 
         JwtAuthenticationToken token = jwtTokenMock.createMockToken();
         String result = testClient.get()
-                .uri("/api/boxboxd/drivers?property=code&value=HAM")
+                .uri("/api/boxboxd/teams?property=name&value=Ferrari")
                 .header("Authorization", "Bearer " + token.getToken().getTokenValue())
                 .exchange()
                 .expectStatus().isOk()
@@ -47,50 +47,50 @@ class DriverControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(result);
         int totalElements = root.path("totalElements").asInt();
-        String code = root.path("content").get(0).path("code").asText();
         String name = root.path("content").get(0).path("name").asText();
+        String country = root.path("content").get(0).path("country").asText();
 
         assertEquals(1, totalElements);
-        assertEquals("HAM", code);
-        assertEquals("Lewis", name);
+        assertEquals("Ferrari", name);
+        assertEquals("Italy", country);
     }
 
     @Test
-    @DisplayName("Get drivers by propertys unauthenticated")
-    void testGetDriversByPropertyUnauthenticated() {
+    @DisplayName("Get teams by propertys unauthenticated")
+    void testGetTeamsByPropertyUnauthenticated() {
 
         testClient.get()
-                .uri("/api/boxboxd/drivers?property=code&value=HAM")
+                .uri("/api/boxboxd/teams?property=name&value=Ferrari")
                 .exchange()
                 .expectStatus().isUnauthorized();
     }
 
     @Test
-    @DisplayName("Get drivers by order atribute don't exists")
-    void testGetDriversByPropertyNotFound() throws JsonProcessingException {
+    @DisplayName("Get teams by order atribute don't exists")
+    void testGetTeamsByPropertyNotFound() throws JsonProcessingException {
 
         JwtAuthenticationToken token = jwtTokenMock.createMockToken();
         ErrorMessage result = testClient.get()
-                .uri("/api/boxboxd/drivers?orderBy=XXX")
+                .uri("/api/boxboxd/teams?orderBy=xxx")
                 .header("Authorization", "Bearer " + token.getToken().getTokenValue())
                 .exchange()
                 .expectStatus().isEqualTo(500)
                 .expectBody(ErrorMessage.class)
                 .returnResult().getResponseBody();
 
-
         assertThat(result).isNotNull();
-        assertThat(result.getMessage()).isEqualTo("No property 'XXX' found for type 'Driver'");
+        assertThat(result.getMessage()).isEqualTo("No property 'xxx' found for type 'Team'");
         assertThat(result.getStatus()).isEqualTo(500);
+
     }
 
     @Test
-    @DisplayName("Get drivers by propertys atribute don't exists") 
-    void testGetDriversByPropertyAtributeNotFound() throws JsonProcessingException {
+    @DisplayName("Get teams by propertys atribute don't exists")
+    void testGetTeamsByPropertyAtributNotFound() throws JsonProcessingException {
 
         JwtAuthenticationToken token = jwtTokenMock.createMockToken();
         ErrorMessage result = testClient.get()
-                .uri("/api/boxboxd/drivers?property=XXX&value=HAM")
+                .uri("/api/boxboxd/teams?property=xxx&value=Ferrari")
                 .header("Authorization", "Bearer " + token.getToken().getTokenValue())
                 .exchange()
                 .expectStatus().isEqualTo(500)
@@ -98,18 +98,19 @@ class DriverControllerTest {
                 .returnResult().getResponseBody();
 
         assertThat(result).isNotNull();
-        assertThat(result.getMessage()).isEqualTo("Could not resolve attribute 'xxx' of 'com.kropsz.github.backendboxboxd.entities.Driver'");
+        assertThat(result.getMessage()).isEqualTo("Could not resolve attribute 'xxx' of 'com.kropsz.github.backendboxboxd.entities.Team'");
         assertThat(result.getStatus()).isEqualTo(500);
+
     }
 
 
     @Test
     @DisplayName("Get drivers by propertys order by null")
-    void testGetDriversByPropertyOrderByNull() throws JsonProcessingException {
+    void testGetTeamsByPropertyOrderByNull() throws JsonProcessingException {
 
         JwtAuthenticationToken token = jwtTokenMock.createMockToken();
         String result = testClient.get()
-                .uri("/api/boxboxd/drivers?property=code&value=HAM&orderBy=")
+                .uri("/api/boxboxd/teams?property=name&value=Ferrari&orderBy=")
                 .header("Authorization", "Bearer " + token.getToken().getTokenValue())
                 .exchange()
                 .expectStatus().isOk()
@@ -118,11 +119,13 @@ class DriverControllerTest {
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(result);
-        String code = root.path("content").get(0).path("code").asText();
+        int totalElements = root.path("totalElements").asInt();
         String name = root.path("content").get(0).path("name").asText();
+        String country = root.path("content").get(0).path("country").asText();
 
-        assertEquals("HAM", code);
-        assertEquals("Lewis", name);
+        assertEquals(1, totalElements);
+        assertEquals("Ferrari", name);
+        assertEquals("Italy", country);
     }
 
 }
