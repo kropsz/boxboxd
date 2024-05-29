@@ -1,7 +1,7 @@
 package com.kropsz.github.backendboxboxd.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -33,16 +33,11 @@ public class DriverService {
     }
 
     @Transactional(readOnly = true)
-    public List<Driver> getDriversByProperty(String property, String value, String orderBy, Sort.Direction direction) {
-        if (orderBy == null || orderBy.isEmpty()) {
-            orderBy = "name";
-                }
+    public Page<Driver> getDriversByProperty(String property, String value, Pageable pageable) {
         if (property == null && value == null) {
-            Sort sort = orderByProperty(orderBy, direction);
-            return driverRepository.findAll(sort);
+            return driverRepository.findAll(pageable);
         }
         Specification<Driver> spec = hasProperty(property, value);
-        Sort sort = orderByProperty(orderBy, direction);
-        return driverRepository.findAll(spec, sort);
+        return driverRepository.findAll(spec, pageable);
     }
 }

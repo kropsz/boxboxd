@@ -1,8 +1,10 @@
 package com.kropsz.github.backendboxboxd.web.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,13 +22,16 @@ public class DriverController {
     
     private final DriverService driverService;
 
-    @GetMapping("/drivers")
-    public List<Driver> getDriversByProperty(
-            @RequestParam(required = false) String property,
-            @RequestParam(required = false) String value,
-            @RequestParam(required = false) String orderBy,
-            @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
-        return driverService.getDriversByProperty(property, value, orderBy, direction);
-    }
+@GetMapping("/drivers")
+public ResponseEntity<Page<Driver>> getDriversByProperty(
+        @RequestParam(required = false) String property,
+        @RequestParam(required = false) String value,
+        @RequestParam(required = false) String orderBy,
+        @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size) {
+    Pageable pageable = PageRequest.of(page, size, direction, orderBy);
+    return ResponseEntity.ok().body(driverService.getDriversByProperty(property, value, pageable));
+}
 
 }
