@@ -1,5 +1,6 @@
 package com.kropsz.github.backendboxboxd.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kropsz.github.backendboxboxd.security.JwtTokenMock;
 import com.kropsz.github.backendboxboxd.security.TestConfig;
+import com.kropsz.github.backendboxboxd.web.exceptions.ErrorMessage;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = "/database/drivers/drivers.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -64,36 +66,42 @@ class DriverControllerTest {
     }
 
     @Test
-    @DisplayName("Get drivers by propertys not found")
+    @DisplayName("Get drivers by order atribute don't exists")
     void testGetDriversByPropertyNotFound() throws JsonProcessingException {
 
         JwtAuthenticationToken token = jwtTokenMock.createMockToken();
-        String result = testClient.get()
-                .uri("/api/boxboxd/drivers?property=code&value=XXX")
+        ErrorMessage result = testClient.get()
+                .uri("/api/boxboxd/drivers?orderBy=XXX")
                 .header("Authorization", "Bearer " + token.getToken().getTokenValue())
                 .exchange()
-                .expectStatus().isOk()
-                .expectBody(String.class)
+                .expectStatus().isEqualTo(500)
+                .expectBody(ErrorMessage.class)
                 .returnResult().getResponseBody();
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(result);
-        int totalElements = root.path("totalElements").asInt();
 
-        assertEquals(0, totalElements);
+        assertThat(result).isNotNull();
+        assertThat(result.getMessage()).isEqualTo("No property 'XXX' found for type 'Driver'");
+        assertThat(result.getStatus()).isEqualTo(500);
     }
 
     @Test
-    @DisplayName("Get drivers by propertys invalid property")
-    void testGetDriversByPropertyInvalidProperty() {
+    @DisplayName("Get drivers by propertys atribute don't exists") 
+    void testGetDriversByPropertyAtributeNotFound() throws JsonProcessingException {
 
         JwtAuthenticationToken token = jwtTokenMock.createMockToken();
-        testClient.get()
-                .uri("/api/boxboxd/drivers?property=xxx&value=HAM")
+        ErrorMessage result = testClient.get()
+                .uri("/api/boxboxd/drivers?property=XXX&value=HAM")
                 .header("Authorization", "Bearer " + token.getToken().getTokenValue())
                 .exchange()
-                .expectStatus().isEqualTo(500);
+                .expectStatus().isEqualTo(500)
+                .expectBody(ErrorMessage.class)
+                .returnResult().getResponseBody();
+
+        assertThat(result).isNotNull();
+        assertThat(result.getMessage()).isEqualTo("Could not resolve attribute 'xxx' of 'com.kropsz.github.backendboxboxd.entities.Driver'");
+        assertThat(result.getStatus()).isEqualTo(500);
     }
+
 
     @Test
     @DisplayName("Get drivers by propertys order by null")
