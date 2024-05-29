@@ -13,8 +13,6 @@ import com.kropsz.github.backendboxboxd.security.JwtTokenMock;
 import com.kropsz.github.backendboxboxd.security.TestConfig;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "/database/users/data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(scripts = "/database/users/delete-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = "/database/drivers/drivers.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "/database/drivers/delete-drivers.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = "/database/teams/teams.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
