@@ -26,6 +26,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.kropsz.github.backendboxboxd.entities.Driver;
 import com.kropsz.github.backendboxboxd.repository.DriverRepository;
+import com.kropsz.github.backendboxboxd.service.search.DriverService;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

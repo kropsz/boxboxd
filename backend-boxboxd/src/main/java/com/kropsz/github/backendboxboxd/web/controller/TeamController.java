@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kropsz.github.backendboxboxd.entities.Team;
-import com.kropsz.github.backendboxboxd.service.TeamService;
+import com.kropsz.github.backendboxboxd.service.search.TeamService;
 
 import lombok.RequiredArgsConstructor;
 
