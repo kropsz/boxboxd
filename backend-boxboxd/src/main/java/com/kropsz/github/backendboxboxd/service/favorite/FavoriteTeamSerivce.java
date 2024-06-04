@@ -1,4 +1,4 @@
-package com.kropsz.github.backendboxboxd.service;
+package com.kropsz.github.backendboxboxd.service.favorite;
 
 import java.util.List;
 
@@ -16,13 +16,14 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class FavoriteTeamSerivce {
+public class FavoriteTeamSerivce implements FavoriteService{
     private final FavoriteTeamRepository favoriteTeamRepository;
     private final List<FavoriteStrategy> favoriteStrategies;
     private final FavoriteTeamFactory favoriteTeamFactory;
     private final TeamRepository teamRepository;
 
-    public void addFavoriteTeam(String teamName, Long userId) {
+    @Override
+    public void addFavorite(String teamName, Long userId) {
 
         if (!teamRepository.existsById(teamName))
             throw new NotFoundException("Time não encontrado para o teamName: " + teamName);
@@ -41,7 +42,8 @@ public class FavoriteTeamSerivce {
     }
 
     @Transactional
-    public void removeFavoriteTeam(String teamName, Long userId) {
+    @Override
+    public void removeFavorite(String teamName, Long userId) {
 
         if (!teamRepository.existsById(teamName))
             throw new NotFoundException("Time não encontrado para o teamName: " + teamName);

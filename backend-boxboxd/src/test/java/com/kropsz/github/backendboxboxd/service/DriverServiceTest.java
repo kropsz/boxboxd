@@ -26,6 +26,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.kropsz.github.backendboxboxd.entities.Driver;
 import com.kropsz.github.backendboxboxd.repository.DriverRepository;
+import com.kropsz.github.backendboxboxd.service.search.DriverService;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -83,14 +84,14 @@ class DriverServiceTest {
     }
 
     @Test
-    @DisplayName("test order by property successfully")
+    @DisplayName("test order by driver property successfully")
     void testOrderByProperty() {
         var sort = DriverService.orderByProperty("code", null);
         assertEquals("code: ASC", sort.toString());
     }
 
     @Test
-    @DisplayName("test order by property IllegalArgumentException")
+    @DisplayName("(DRIVER) test order by property IllegalArgumentException")
     void testOrderByPropertyIllegalArgumentException() {
         try {
             DriverService.orderByProperty("", null);
@@ -114,7 +115,7 @@ class DriverServiceTest {
     }
 
     @Test
-    @DisplayName("test order by property with null property")
+    @DisplayName("(DRIVER) test order by property with null property")
     void testOrderByPropertyWithNullProperty() {
         assertThrows(IllegalArgumentException.class, () -> {
             DriverService.orderByProperty(null, Sort.Direction.ASC);
@@ -122,7 +123,7 @@ class DriverServiceTest {
     }
 
     @Test
-    @DisplayName("test order by property with empty property")
+    @DisplayName("(DRIVER) test order by property with empty property")
     void testOrderByPropertyWithEmptyProperty() {
         assertThrows(IllegalArgumentException.class, () -> {
             DriverService.orderByProperty("", Sort.Direction.ASC);

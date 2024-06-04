@@ -1,25 +1,24 @@
-package com.kropsz.github.backendboxboxd.service;
+package com.kropsz.github.backendboxboxd.service.search;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.kropsz.github.backendboxboxd.entities.Team;
-import com.kropsz.github.backendboxboxd.repository.TeamRepository;
+import com.kropsz.github.backendboxboxd.entities.Circuits;
+import com.kropsz.github.backendboxboxd.repository.CircuitsRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class TeamService {
+public class CircuitsService {
     
-    private final TeamRepository teamRepository;
+    private final CircuitsRepository circuitsRepository;
 
-    public static Specification<Team> hasProperty(String property, String value) {
-        return (team, cq, cb) -> cb.equal(team.get(property), value);
+    public static Specification<Circuits> hasProperty(String property, String value) {
+        return (circuits, cq, cb) -> cb.equal(circuits.get(property), value);
     }
 
     public static Sort orderByProperty(String property, Sort.Direction direction) {
@@ -32,13 +31,12 @@ public class TeamService {
         return Sort.by(direction, property);
     }
 
-    @Transactional(readOnly = true)
-    public Page<Team> getTeamsByProperty(String property, String value, Pageable pageable) {
+    public Page<Circuits> getCircuitsByProperty(String property, String value, Pageable pageable) {
         if (property == null && value == null) {
-            return teamRepository.findAll(pageable);
+            return circuitsRepository.findAll(pageable);
         }
-        Specification<Team> spec = hasProperty(property, value);
-        return teamRepository.findAll(spec, pageable);
+        Specification<Circuits> spec = hasProperty(property, value);
+        return circuitsRepository.findAll(spec, pageable);
     }
-
+    
 }

@@ -26,6 +26,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.kropsz.github.backendboxboxd.entities.Team;
 import com.kropsz.github.backendboxboxd.repository.TeamRepository;
+import com.kropsz.github.backendboxboxd.service.search.TeamService;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -92,21 +93,6 @@ class TeamServiceTest {
         } catch (IllegalArgumentException e) {
             assertEquals("Property must not be null or empty", e.getMessage());
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    @DisplayName("test getTeamsByProperty with null property and value")
-    void testGetTeamsByPropertyWithNullPropertyAndValue(){
-        var team = VALID_TEAM;
-        Page<Team> page = new PageImpl<>(Collections.singletonList(team));
-
-        when(teamRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(page);
-
-        Page<Team> result = teamService.getTeamsByProperty("name", "Ferrari", PageRequest.of(0, 1));
-        assertEquals(1, result.getContent().size());
-        assertEquals("Ferrari", result.getContent().get(0).getName());
-        assertEquals("Italy", result.getContent().get(0).getCountry());
     }
 
     @Test

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kropsz.github.backendboxboxd.entities.Driver;
-import com.kropsz.github.backendboxboxd.service.DriverService;
+import com.kropsz.github.backendboxboxd.service.search.DriverService;
 
 import lombok.RequiredArgsConstructor;
 

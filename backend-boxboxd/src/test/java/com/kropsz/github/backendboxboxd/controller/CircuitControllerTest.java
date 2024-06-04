@@ -20,11 +20,11 @@ import com.kropsz.github.backendboxboxd.security.TestConfig;
 import com.kropsz.github.backendboxboxd.web.exceptions.ErrorMessage;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "/database/drivers/drivers.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(scripts = "/database/drivers/delete-drivers.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = "/database/circuits/circuits.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "/database/circuits/delete-circuits.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Import(TestConfig.class)
-class DriverControllerTest {
-
+class CircuitControllerTest {
+    
     @Autowired
     WebTestClient testClient;
 
@@ -32,12 +32,12 @@ class DriverControllerTest {
     JwtTokenMock jwtTokenMock;
 
     @Test
-    @DisplayName("Get drivers by propertys")
-    void testGetDriversByProperty() throws JsonProcessingException {
+    @DisplayName("Get circuits by propertys")
+    void testGetCircuitsByProperty() throws JsonProcessingException {
 
         JwtAuthenticationToken token = jwtTokenMock.createMockToken();
         String result = testClient.get()
-                .uri("/api/boxboxd/drivers?orderBy=name&property=code&value=HAM")
+                .uri("/api/boxboxd/circuits?property=name&value=Circuit de Monaco")
                 .header("Authorization", "Bearer " + token.getToken().getTokenValue())
                 .exchange()
                 .expectStatus().isOk()
@@ -47,50 +47,30 @@ class DriverControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(result);
         int totalElements = root.path("totalElements").asInt();
-        String code = root.path("content").get(0).path("code").asText();
         String name = root.path("content").get(0).path("name").asText();
+        String description = root.path("content").get(0).path("description").asText();
 
         assertEquals(1, totalElements);
-        assertEquals("HAM", code);
-        assertEquals("Lewis", name);
+        assertEquals("Circuit de Monaco", name);
+        assertEquals("Street circuit in Monte Carlo", description);
     }
 
     @Test
-    @DisplayName("Get drivers by propertys unauthenticated")
-    void testGetDriversByPropertyUnauthenticated() {
-
+    @DisplayName("Get circuits by propertys unauthenticated")
+    void testGetCircuitsByPropertyUnauthenticated() {
         testClient.get()
-                .uri("/api/boxboxd/drivers?property=code&value=HAM")
+                .uri("/api/boxboxd/circuits?property=name&value=Circuit de Monaco")
                 .exchange()
                 .expectStatus().isUnauthorized();
     }
 
     @Test
-    @DisplayName("Get drivers by order atribute don't exists")
-    void testGetDriversByPropertyNotFound() {
+    @DisplayName("Get circuits by order atribute don't exists")
+    void testGetCircuitsByOrderAttributeDontExists() {
 
         JwtAuthenticationToken token = jwtTokenMock.createMockToken();
         ErrorMessage result = testClient.get()
-                .uri("/api/boxboxd/drivers?orderBy=XXX")
-                .header("Authorization", "Bearer " + token.getToken().getTokenValue())
-                .exchange()
-                .expectStatus().isEqualTo(500)
-                .expectBody(ErrorMessage.class)
-                .returnResult().getResponseBody();
-
-
-        assertThat(result).isNotNull();
-        assertThat(result.getMessage()).isEqualTo("No property 'XXX' found for type 'Driver'");
-        assertThat(result.getStatus()).isEqualTo(500);
-    }
-
-    @Test
-    @DisplayName("Get drivers by propertys atribute don't exists") 
-    void testGetDriversByPropertyAtributeNotFound() {
-
-        JwtAuthenticationToken token = jwtTokenMock.createMockToken();
-        ErrorMessage result = testClient.get()
-                .uri("/api/boxboxd/drivers?property=XXX&value=HAM")
+                .uri("/api/boxboxd/circuits?orderBy=XXX")
                 .header("Authorization", "Bearer " + token.getToken().getTokenValue())
                 .exchange()
                 .expectStatus().isEqualTo(500)
@@ -98,31 +78,48 @@ class DriverControllerTest {
                 .returnResult().getResponseBody();
 
         assertThat(result).isNotNull();
-        assertThat(result.getMessage()).isEqualTo("Could not resolve attribute 'XXX' of 'com.kropsz.github.backendboxboxd.entities.Driver'");
+        assertThat(result.getMessage()).isEqualTo("No property 'XXX' found for type 'Circuits'");
         assertThat(result.getStatus()).isEqualTo(500);
     }
 
+    @Test
+    @DisplayName("Get circuits by propertys atribute don't exists")
+    void testGetCircuitsByPropertyAttributeDontExists() {
+
+        JwtAuthenticationToken token = jwtTokenMock.createMockToken();
+        ErrorMessage result = testClient.get()
+                .uri("/api/boxboxd/circuits?property=XXX&value=Circuit de Monaco")
+                .header("Authorization", "Bearer " + token.getToken().getTokenValue())
+                .exchange()
+                .expectStatus().isEqualTo(500)
+                .expectBody(ErrorMessage.class)
+                .returnResult().getResponseBody();
+
+        assertThat(result).isNotNull();
+        assertThat(result.getMessage()).isEqualTo("Could not resolve attribute 'XXX' of 'com.kropsz.github.backendboxboxd.entities.Circuits'");
+        assertThat(result.getStatus()).isEqualTo(500);
+    }
 
     @Test
-    @DisplayName("Get drivers by propertys order by null")
-    void testGetDriversByPropertyOrderByNull() throws JsonProcessingException {
+    @DisplayName("Get circuits by propertys order by null")
+    void testGetCircuitsByPropertyOrderByNull() throws JsonProcessingException {
 
         JwtAuthenticationToken token = jwtTokenMock.createMockToken();
         String result = testClient.get()
-                .uri("/api/boxboxd/drivers?property=code&value=HAM&orderBy=")
+                .uri("/api/boxboxd/circuits?property=name&value=Circuit de Monaco&orderBy=")
                 .header("Authorization", "Bearer " + token.getToken().getTokenValue())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .returnResult().getResponseBody();
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(result);
-        String code = root.path("content").get(0).path("code").asText();
-        String name = root.path("content").get(0).path("name").asText();
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode root = mapper.readTree(result);
+                String name = root.path("content").get(0).path("name").asText();
+        
 
-        assertEquals("HAM", code);
-        assertEquals("Lewis", name);
+        assertEquals("Circuit de Monaco", name);
+        
     }
 
 }
