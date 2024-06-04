@@ -1,4 +1,4 @@
-package com.kropsz.github.backendboxboxd.service;
+package com.kropsz.github.backendboxboxd.service.favorite;
 
 import java.util.List;
 
@@ -16,14 +16,15 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class FavoriteDriverService {
+public class FavoriteDriverService implements FavoriteService {
 
     private final FavoriteDriverRepository favoriteDriverRepository;
     private final List<FavoriteStrategy> favoriteStrategies;
     private final FavoriteDriverFactory favoriteDriverFactory;
     private final DriverRepository driverRepository;
 
-    public void addFavoriteDriver(String driverId, Long userId) {
+    @Override
+    public void addFavorite(String driverId, Long userId) {
 
         if (!driverRepository.existsById(driverId)) 
             throw new NotFoundException("Piloto não encontrado para o driverId: " + driverId);
@@ -42,7 +43,8 @@ public class FavoriteDriverService {
     }
 
     @Transactional
-    public void removeFavoriteDriver(String driverCode, Long userId) {
+    @Override
+    public void removeFavorite(String driverCode, Long userId) {
         
         if (!driverRepository.existsById(driverCode)) 
             throw new NotFoundException("Piloto não encontrado para o driverCode: " + driverCode);

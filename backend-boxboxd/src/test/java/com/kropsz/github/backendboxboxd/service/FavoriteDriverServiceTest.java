@@ -24,6 +24,7 @@ import com.kropsz.github.backendboxboxd.exception.ConflictException;
 import com.kropsz.github.backendboxboxd.exception.NotFoundException;
 import com.kropsz.github.backendboxboxd.repository.DriverRepository;
 import com.kropsz.github.backendboxboxd.repository.favorite.FavoriteDriverRepository;
+import com.kropsz.github.backendboxboxd.service.favorite.FavoriteDriverService;
 import com.kropsz.github.backendboxboxd.util.factory.impl.FavoriteDriverFactory;
 import com.kropsz.github.backendboxboxd.util.strategy.FavoriteStrategy;
 
@@ -60,7 +61,7 @@ class FavoriteDriverServiceTest {
     
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
     
-        favoriteDriverService.addFavoriteDriver(driverId, userId);
+        favoriteDriverService.addFavorite(driverId, userId);
     
         verify(strategy, times(1)).supports("driver");
         verify(strategy, times(1)).execute(driverId, userId);
@@ -82,7 +83,7 @@ class FavoriteDriverServiceTest {
     
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
     
-        assertThatThrownBy(() -> favoriteDriverService.addFavoriteDriver(driverId, userId)).isInstanceOf(ConflictException.class);
+        assertThatThrownBy(() -> favoriteDriverService.addFavorite(driverId, userId)).isInstanceOf(ConflictException.class);
     
         verify(strategy, times(1)).supports("driver");
         verify(strategy, times(1)).execute(driverId, userId);
@@ -100,7 +101,7 @@ class FavoriteDriverServiceTest {
     
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
     
-        assertThatThrownBy(() -> favoriteDriverService.addFavoriteDriver(driverId, userId)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> favoriteDriverService.addFavorite(driverId, userId)).isInstanceOf(IllegalArgumentException.class);
     
         verify(strategy, times(1)).supports("driver");
     }
@@ -118,7 +119,7 @@ class FavoriteDriverServiceTest {
     
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
     
-        favoriteDriverService.removeFavoriteDriver(driverCode, userId);
+        favoriteDriverService.removeFavorite(driverCode, userId);
     
         verify(strategy, times(1)).supports("driver");
         verify(strategy, times(1)).exists(driverCode, userId);
@@ -140,7 +141,7 @@ class FavoriteDriverServiceTest {
         
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
     
-        assertThatThrownBy(() -> favoriteDriverService.removeFavoriteDriver(driverCode, userId)).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> favoriteDriverService.removeFavorite(driverCode, userId)).isInstanceOf(NotFoundException.class);
     
         verify(strategy, times(1)).supports("driver");
         verify(strategy, times(1)).exists(driverCode, userId);

@@ -24,6 +24,7 @@ import com.kropsz.github.backendboxboxd.exception.ConflictException;
 import com.kropsz.github.backendboxboxd.exception.NotFoundException;
 import com.kropsz.github.backendboxboxd.repository.TeamRepository;
 import com.kropsz.github.backendboxboxd.repository.favorite.FavoriteTeamRepository;
+import com.kropsz.github.backendboxboxd.service.favorite.FavoriteTeamSerivce;
 import com.kropsz.github.backendboxboxd.util.factory.impl.FavoriteTeamFactory;
 import com.kropsz.github.backendboxboxd.util.strategy.FavoriteStrategy;
 
@@ -60,7 +61,7 @@ class FavoriteTeamServiceTest {
     
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
     
-        favoriteTeamService.addFavoriteTeam(teamId, userId);
+        favoriteTeamService.addFavorite(teamId, userId);
     
         verify(strategy, times(1)).supports("team");
         verify(strategy, times(1)).execute(teamId, userId);
@@ -82,7 +83,7 @@ class FavoriteTeamServiceTest {
 
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
         
-        assertThatThrownBy(() -> favoriteTeamService.addFavoriteTeam(teamId, userId))
+        assertThatThrownBy(() -> favoriteTeamService.addFavorite(teamId, userId))
             .isInstanceOf(ConflictException.class);
 
         verify(strategy, times(1)).supports("team");
@@ -102,7 +103,7 @@ class FavoriteTeamServiceTest {
 
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
         
-        assertThatThrownBy(() -> favoriteTeamService.addFavoriteTeam(teamId, userId))
+        assertThatThrownBy(() -> favoriteTeamService.addFavorite(teamId, userId))
             .isInstanceOf(IllegalArgumentException.class);
 
             verify(strategy, times(1)).supports("team");
@@ -120,7 +121,7 @@ class FavoriteTeamServiceTest {
 
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
     
-        favoriteTeamService.removeFavoriteTeam(teamId, userId);
+        favoriteTeamService.removeFavorite(teamId, userId);
     
         verify(strategy, times(1)).supports("team");
         verify(strategy, times(1)).exists(teamId, userId);
@@ -141,7 +142,7 @@ class FavoriteTeamServiceTest {
 
         when(favoriteStrategies.stream()).thenReturn(Stream.of(strategy));
     
-        assertThatThrownBy(() -> favoriteTeamService.removeFavoriteTeam(teamId, userId))
+        assertThatThrownBy(() -> favoriteTeamService.removeFavorite(teamId, userId))
             .isInstanceOf(NotFoundException.class);
     
         verify(strategy, times(1)).supports("team");

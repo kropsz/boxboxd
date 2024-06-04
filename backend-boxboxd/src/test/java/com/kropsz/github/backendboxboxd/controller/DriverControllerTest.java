@@ -98,7 +98,7 @@ class DriverControllerTest {
                 .returnResult().getResponseBody();
 
         assertThat(result).isNotNull();
-        assertThat(result.getMessage()).isEqualTo("Could not resolve attribute 'xxx' of 'com.kropsz.github.backendboxboxd.entities.Driver'");
+        assertThat(result.getMessage()).isEqualTo("Could not resolve attribute 'XXX' of 'com.kropsz.github.backendboxboxd.entities.Driver'");
         assertThat(result.getStatus()).isEqualTo(500);
     }
 
