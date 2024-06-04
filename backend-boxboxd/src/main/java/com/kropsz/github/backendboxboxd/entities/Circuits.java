@@ -31,7 +31,7 @@ public class Circuits {
     private String driverBestLap;
     @Column(name = "fast_lap") 
     private String fastLap;
-    private int like;
+    private int likes;
     private int reviews;
     private double rating;
 
