@@ -5,7 +5,7 @@ import com.kropsz.github.backendboxboxd.entities.Circuits;
 public class CircuitConstants {
     
     public static final Circuits VALID_CIRCUIT = new Circuits(
-        1L,  
+        "monaco",  
         "Circuit de Monaco",
         "Street circuit in Monte Carlo",
         "Monaco",
@@ -15,7 +15,8 @@ public class CircuitConstants {
         "1:10.166",
         500000,
         2000,
-        9.8
+        9.8,
+        1000
     );
 
 }
