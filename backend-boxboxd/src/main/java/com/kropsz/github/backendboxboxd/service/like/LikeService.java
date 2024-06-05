@@ -35,6 +35,7 @@ public class LikeService {
                 entityType);
 
         likeRepository.save(like);
+        entityVerification.incrementLikeCounter(entityId, entityType);
     }
 
     @Transactional
@@ -43,6 +44,7 @@ public class LikeService {
             throw new NotFoundException(
                     "Like não existe para esse usuario e essa entidade de tipo: " + entityType);
         }
+        entityVerification.decrementLikeCounter(entityId, entityType);
         likeRepository.deleteByUserIdAndEntityIdAndType(userId, entityId, entityType);
     }
 

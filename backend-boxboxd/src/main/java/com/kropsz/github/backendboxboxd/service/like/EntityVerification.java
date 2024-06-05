@@ -1,7 +1,12 @@
 package com.kropsz.github.backendboxboxd.service.like;
 
+import java.sql.Time;
+
 import org.springframework.stereotype.Component;
 
+import com.kropsz.github.backendboxboxd.entities.Circuits;
+import com.kropsz.github.backendboxboxd.entities.Driver;
+import com.kropsz.github.backendboxboxd.entities.Team;
 import com.kropsz.github.backendboxboxd.entities.like.EntityType;
 import com.kropsz.github.backendboxboxd.exception.NotFoundException;
 import com.kropsz.github.backendboxboxd.exception.TypeNotFoundException;
@@ -39,29 +44,60 @@ public class EntityVerification {
         }
     }
 
-    public void incrementLikeCounter(String entityId, EntityType entityType) {
+    private Object findEntityById(String entityId, EntityType entityType) {
         switch (entityType) {
             case DRIVER:
-                var driver = driverRepository.findById(entityId)
+                return driverRepository.findById(entityId)
                         .orElseThrow(() -> new NotFoundException("Piloto não encontrado"));
-                driver.setLikes(driver.getLikes() + 1);
-                driverRepository.save(driver);
+            case TEAM:
+                return teamRepository.findById(entityId)
+                        .orElseThrow(() -> new NotFoundException("Time não encontrado"));
+            case CIRCUIT:
+                return circuitsRepository.findById(entityId)
+                        .orElseThrow(() -> new NotFoundException("Pista não encontrada"));
+            default:
+                throw new IllegalArgumentException("Tipo desconhecido de entidade: " + entityType);
+        }
+    }
+
+    private void saveEntity(Object entity, EntityType entityType) {
+        switch (entityType) {
+            case DRIVER:
+                driverRepository.save((Driver) entity);
                 break;
             case TEAM:
-                var team = teamRepository.findById(entityId)
-                        .orElseThrow(() -> new NotFoundException("Time não encontrado"));
-                team.setLikes(team.getLikes() + 1);
-                teamRepository.save(team);
+                teamRepository.save((Team) entity);
                 break;
             case CIRCUIT:
-                var circuit = circuitsRepository.findById(entityId)
-                        .orElseThrow(() -> new NotFoundException("Pista não encontrada"));
-                circuit.setLikes(circuit.getLikes() + 1);
-                circuitsRepository.save(circuit);
+                circuitsRepository.save((Circuits) entity);
                 break;
             default:
-                throw new IllegalArgumentException("Unknown entity type: " + entityType);
+                throw new IllegalArgumentException("Tipo deseconhecido de entidade: " + entityType);
         }
-
     }
+
+    public void incrementLikeCounter(String entityId, EntityType entityType) {
+        var entity = findEntityById(entityId, entityType);
+        if (entity instanceof Driver) {
+            ((Driver) entity).setLikes(((Driver) entity).getLikes() + 1);
+        } else if (entity instanceof Time) {
+            ((Team) entity).setLikes(((Team) entity).getLikes() + 1);
+        } else if (entity instanceof Circuits) {
+            ((Circuits) entity).setLikes(((Circuits) entity).getLikes() + 1);
+        }
+        saveEntity(entity, entityType);
+    }
+
+    public void decrementLikeCounter(String entityId, EntityType entityType) {
+        var entity = findEntityById(entityId, entityType);
+        if (entity instanceof Driver) {
+            ((Driver) entity).setLikes(((Driver) entity).getLikes() - 1);
+        } else if (entity instanceof Team) {
+            ((Team) entity).setLikes(((Team) entity).getLikes() - 1);
+        } else if (entity instanceof Circuits) {
+            ((Circuits) entity).setLikes(((Circuits) entity).getLikes() - 1);
+        }
+        saveEntity(entity, entityType);
+    }
+
 }
