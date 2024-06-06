@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.kropsz.github.backendboxboxd.exception.BusinessViolationException;
 import com.kropsz.github.backendboxboxd.exception.ConflictException;
 import com.kropsz.github.backendboxboxd.exception.NotFoundException;
+import com.kropsz.github.backendboxboxd.exception.TypeNotFoundException;
 import com.kropsz.github.backendboxboxd.exception.UserNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,8 +28,8 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException ex,
-                                                                        HttpServletRequest request,
-                                                                        BindingResult result) {
+            HttpServletRequest request,
+            BindingResult result) {
         log.error("Api Error - ", ex);
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -36,7 +37,7 @@ public class ApiExceptionHandler {
                 .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "Campos Inválidos: ", result));
     }
 
-    @ExceptionHandler({UserNotFoundException.class,NotFoundException.class })
+    @ExceptionHandler({ UserNotFoundException.class, NotFoundException.class })
     public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException ex, HttpServletRequest request) {
         log.error("Api Error - ", ex);
         return ResponseEntity
@@ -45,9 +46,9 @@ public class ApiExceptionHandler {
                 .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
-    @ExceptionHandler({BusinessViolationException.class, ConflictException.class})
+    @ExceptionHandler({ BusinessViolationException.class, ConflictException.class })
     public ResponseEntity<ErrorMessage> businessViolationException(RuntimeException ex,
-                                                                   HttpServletRequest request) {
+            HttpServletRequest request) {
         log.error("Api Error - ", ex);
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
@@ -55,8 +56,8 @@ public class ApiExceptionHandler {
                 .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErrorMessage> uniqueViolationException(RuntimeException ex, HttpServletRequest request){
+    @ExceptionHandler({ BadCredentialsException.class, TypeNotFoundException.class })
+    public ResponseEntity<ErrorMessage> uniqueViolationException(RuntimeException ex, HttpServletRequest request) {
         log.error("Api Error - ", ex);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -65,7 +66,8 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ErrorMessage> unauthorizedErrorException(AuthenticationException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorMessage> unauthorizedErrorException(AuthenticationException ex,
+            HttpServletRequest request) {
         log.error("Api Error - ", ex);
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -83,4 +85,3 @@ public class ApiExceptionHandler {
     }
 
 }
-

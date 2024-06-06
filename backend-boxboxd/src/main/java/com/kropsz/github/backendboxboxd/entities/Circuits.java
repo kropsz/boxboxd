@@ -2,8 +2,6 @@ package com.kropsz.github.backendboxboxd.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -20,8 +18,8 @@ import lombok.Setter;
 public class Circuits {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "code_id")
+    private String codeId;
     private String name;
     private String description;
     private String country;
@@ -34,5 +32,6 @@ public class Circuits {
     private int likes;
     private int reviews;
     private double rating;
+    private int ratingCount;
 
 }

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.kropsz.github.backendboxboxd.entities.Circuits;
 
 
-public interface CircuitsRepository extends JpaRepository<Circuits, Long>{
+public interface CircuitsRepository extends JpaRepository<Circuits, String>{
 
     Page<Circuits> findAll(Specification<Circuits> spec, Pageable pageable);
     
