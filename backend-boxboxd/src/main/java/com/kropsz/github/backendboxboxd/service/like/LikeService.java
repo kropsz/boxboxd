@@ -26,7 +26,7 @@ public class LikeService {
         }
 
         if (!entityVerification.isEntityExists(entityId, entityType)) {
-            throw new IllegalArgumentException("Entidade não existe na base de dados: " + entityId);
+            throw new NotFoundException("Entidade não existe na base de dados: " + entityId);
         }
 
         Likes like = new Likes(

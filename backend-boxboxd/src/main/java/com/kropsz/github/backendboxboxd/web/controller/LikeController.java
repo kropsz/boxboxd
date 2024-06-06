@@ -30,10 +30,11 @@ public class LikeController {
     }
 
     @DeleteMapping("/like/{entityType}/{entityId}")
-    public ResponseEntity<Void> removeLike(@PathVariable String entityId, @PathVariable EntityType entityType,
+    public ResponseEntity<Void> removeLike(@PathVariable String entityId, @PathVariable String entityType,
             JwtAuthenticationToken token) {
+        var typeUpperCase = EntityType.valueOf(entityType.toUpperCase());
         var userId = Long.parseLong(token.getName());
-        likeService.removeLike(userId, entityId, entityType);
+        likeService.removeLike(userId, entityId, typeUpperCase);
         return ResponseEntity.noContent().build();
     }
 }
