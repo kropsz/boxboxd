@@ -1,9 +1,9 @@
-package com.kropsz.github.backendboxboxd.util.factory.impl;
+package com.kropsz.github.backendboxboxd.service.favorite.factory.impl;
 
 import org.springframework.stereotype.Component;
 
 import com.kropsz.github.backendboxboxd.entities.favorites.FavoriteTeam;
-import com.kropsz.github.backendboxboxd.util.factory.ObjectFactory;
+import com.kropsz.github.backendboxboxd.service.favorite.factory.ObjectFactory;
 
 @Component
 public class FavoriteTeamFactory implements ObjectFactory{

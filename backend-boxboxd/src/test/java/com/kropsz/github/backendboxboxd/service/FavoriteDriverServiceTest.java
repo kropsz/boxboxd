@@ -1,5 +1,6 @@
 package com.kropsz.github.backendboxboxd.service;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -17,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.kropsz.github.backendboxboxd.entities.favorites.FavoriteDriver;
 import com.kropsz.github.backendboxboxd.exception.ConflictException;
@@ -25,8 +25,8 @@ import com.kropsz.github.backendboxboxd.exception.NotFoundException;
 import com.kropsz.github.backendboxboxd.repository.DriverRepository;
 import com.kropsz.github.backendboxboxd.repository.favorite.FavoriteDriverRepository;
 import com.kropsz.github.backendboxboxd.service.favorite.FavoriteDriverService;
-import com.kropsz.github.backendboxboxd.util.factory.impl.FavoriteDriverFactory;
-import com.kropsz.github.backendboxboxd.util.strategy.FavoriteStrategy;
+import com.kropsz.github.backendboxboxd.service.favorite.factory.impl.FavoriteDriverFactory;
+import com.kropsz.github.backendboxboxd.service.favorite.strategy.FavoriteStrategy;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)

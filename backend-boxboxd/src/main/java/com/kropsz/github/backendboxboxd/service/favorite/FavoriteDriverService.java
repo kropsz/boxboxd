@@ -9,8 +9,8 @@ import com.kropsz.github.backendboxboxd.exception.ConflictException;
 import com.kropsz.github.backendboxboxd.exception.NotFoundException;
 import com.kropsz.github.backendboxboxd.repository.DriverRepository;
 import com.kropsz.github.backendboxboxd.repository.favorite.FavoriteDriverRepository;
-import com.kropsz.github.backendboxboxd.util.factory.impl.FavoriteDriverFactory;
-import com.kropsz.github.backendboxboxd.util.strategy.FavoriteStrategy;
+import com.kropsz.github.backendboxboxd.service.favorite.factory.impl.FavoriteDriverFactory;
+import com.kropsz.github.backendboxboxd.service.favorite.strategy.FavoriteStrategy;
 
 import lombok.RequiredArgsConstructor;
 
