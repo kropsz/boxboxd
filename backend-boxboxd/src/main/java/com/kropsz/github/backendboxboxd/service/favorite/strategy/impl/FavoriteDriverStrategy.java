@@ -1,4 +1,4 @@
-package com.kropsz.github.backendboxboxd.util.strategy.impl;
+package com.kropsz.github.backendboxboxd.service.favorite.strategy.impl;
 
 import java.util.Optional;
 
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.kropsz.github.backendboxboxd.entities.favorites.FavoriteDriver;
 import com.kropsz.github.backendboxboxd.repository.favorite.FavoriteDriverRepository;
-import com.kropsz.github.backendboxboxd.util.strategy.FavoriteStrategy;
+import com.kropsz.github.backendboxboxd.service.favorite.strategy.FavoriteStrategy;
 
 import lombok.RequiredArgsConstructor;
 

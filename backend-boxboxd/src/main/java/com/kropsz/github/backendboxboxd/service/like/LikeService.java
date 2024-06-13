@@ -16,16 +16,16 @@ import lombok.RequiredArgsConstructor;
 public class LikeService {
 
     private final LikeRepository likeRepository;
-    private final EntityVerification entityVerification;
+    private final LikeUtility likeUtility;
 
     public void addLike(Long userId, String entityId, EntityType entityType) {
 
-        if (entityVerification.isLikeAlreadyExists(userId, entityId)) {
+        if (likeUtility.isLikeAlreadyExists(userId, entityId)) {
             throw new BusinessViolationException(
                     "Like ja existe para esse usuario e essa entidade de tipo: " + entityType);
         }
 
-        if (!entityVerification.isEntityExists(entityId, entityType)) {
+        if (!likeUtility.isEntityExists(entityId, entityType)) {
             throw new NotFoundException("Entidade não existe na base de dados: " + entityId);
         }
 
@@ -35,16 +35,16 @@ public class LikeService {
                 entityType);
 
         likeRepository.save(like);
-        entityVerification.incrementLikeCounter(entityId, entityType);
+        likeUtility.incrementLikeCounter(entityId, entityType);
     }
 
     @Transactional
     public void removeLike(Long userId, String entityId, EntityType entityType) {
-        if (!entityVerification.isLikeAlreadyExists(userId, entityId)) {
+        if (!likeUtility.isLikeAlreadyExists(userId, entityId)) {
             throw new NotFoundException(
                     "Like não existe para esse usuario e essa entidade de tipo: " + entityType);
         }
-        entityVerification.decrementLikeCounter(entityId, entityType);
+        likeUtility.decrementLikeCounter(entityId, entityType);
         likeRepository.deleteByUserIdAndEntityIdAndType(userId, entityId, entityType);
     }
 

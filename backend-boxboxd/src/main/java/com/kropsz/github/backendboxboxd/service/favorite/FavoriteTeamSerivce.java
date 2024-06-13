@@ -8,8 +8,8 @@ import com.kropsz.github.backendboxboxd.exception.ConflictException;
 import com.kropsz.github.backendboxboxd.exception.NotFoundException;
 import com.kropsz.github.backendboxboxd.repository.TeamRepository;
 import com.kropsz.github.backendboxboxd.repository.favorite.FavoriteTeamRepository;
-import com.kropsz.github.backendboxboxd.util.factory.impl.FavoriteTeamFactory;
-import com.kropsz.github.backendboxboxd.util.strategy.FavoriteStrategy;
+import com.kropsz.github.backendboxboxd.service.favorite.factory.impl.FavoriteTeamFactory;
+import com.kropsz.github.backendboxboxd.service.favorite.strategy.FavoriteStrategy;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

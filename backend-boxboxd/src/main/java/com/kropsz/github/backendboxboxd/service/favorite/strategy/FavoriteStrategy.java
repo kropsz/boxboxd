@@ -1,4 +1,4 @@
-package com.kropsz.github.backendboxboxd.util.strategy;
+package com.kropsz.github.backendboxboxd.service.favorite.strategy;
 
 public interface FavoriteStrategy {
     
