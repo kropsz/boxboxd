@@ -1,0 +1,23 @@
+server:
+  port: 8082
+
+spring:
+    application:
+        name: msreview
+    data:
+      mongodb:
+        uri: mongodb://root:example@localhost:27017/
+        database: msreview
+        authentication-database: admin
+        username: root
+        password: example
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+              
+mq:
+  queue:
+    event-notification: event-notification
