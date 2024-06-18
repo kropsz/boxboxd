@@ -26,4 +26,19 @@ public class ReviewsController {
         return ResponseEntity.ok(ReviewMapper.toListDto(reviewService.findReviewByUserId(userId)));
     }
 
+    @GetMapping("/{entityId}")
+    public ResponseEntity<List<RecivePayload>> findReviewByEntityId(@PathVariable String entityId){
+        return ResponseEntity.ok(ReviewMapper.toListDto(reviewService.findReviewByEntityId(entityId)));
+    }
+
+    @GetMapping("/{type}")
+    public ResponseEntity<List<RecivePayload>> findReviewByType(@PathVariable String type){
+        return ResponseEntity.ok(ReviewMapper.toListDto(reviewService.findReviewByType(type)));
+    }
+
+    @GetMapping("/latest/{userId}")
+    public ResponseEntity<List<RecivePayload>> searchReviewsLatestFromAUser(@PathVariable Long userId){
+        return ResponseEntity.ok(ReviewMapper.toListDto(reviewService.searchReviewsLatestFromAUser(userId)));
+    }
+
 }

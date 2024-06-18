@@ -41,4 +41,17 @@ public class ReviewService {
     public List<Reviews> findReviewByUserId(Long userId){
         return reviewsRepository.findByUserId(userId);
     }
+
+    public List<Reviews> findReviewByEntityId(String entityId){
+        return reviewsRepository.findByEntityId(entityId);
+    }
+
+    public List<Reviews> findReviewByType(String type){
+        return reviewsRepository.findByType(EntityType.valueOf(type));
+    }
+
+    public List<Reviews> searchReviewsLatestFromAUser(Long userId){
+        return reviewsRepository.findTop3ByUserIdOrderByCreatedAtDesc(userId);
+    }
+
 }
